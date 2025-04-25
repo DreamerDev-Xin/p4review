@@ -1116,9 +1116,9 @@ class P4Review(object):
         ).fetchall()
         assert len(rv) == 1
         cl = rv[0][0]
-        clfiles = zip(
+        clfiles = list(zip(
             cl.get("depotFile", [""]), cl.get("rev", [""]), cl.get("action", [""])
-        )
+        ))
         cldesc = cl.get("desc").strip()
 
         # subject line
@@ -1233,7 +1233,7 @@ class P4Review(object):
             for dfile, drev, action in clfiles
         ]
         log.debug(clfiles_html)
-        
+
         html_info["clfiles"] = "\n".join(clfiles_html)
         html_summary = self.cfg.html_change_template.format(**html_info)
 
