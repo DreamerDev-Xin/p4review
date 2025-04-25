@@ -1504,6 +1504,7 @@ class P4Review(object):
                     smtp.starttls()
             if self.cfg.smtp_user and self.cfg.smtp_passwd:
                 smtp.login(self.cfg.smtp_user, self.cfg.smtp_passwd)
+            log.debug(f"Sending email to {to}")
             smtp.sendmail(fr, to, msg.as_string())
             smtp.quit()
 
