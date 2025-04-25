@@ -1221,6 +1221,7 @@ class P4Review(object):
             )
         html_info["jobsupdated"] = jobsupdated
 
+        log.debug(clfiles)
         clfiles_html = [
             self.cfg.html_files_template.format(
                 change_url=info["change_url"],
@@ -1231,6 +1232,8 @@ class P4Review(object):
             )
             for dfile, drev, action in clfiles
         ]
+        log.debug(clfiles_html)
+        
         html_info["clfiles"] = "\n".join(clfiles_html)
         html_summary = self.cfg.html_change_template.format(**html_info)
 
