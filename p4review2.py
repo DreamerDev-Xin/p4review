@@ -1353,7 +1353,7 @@ class P4Review(object):
             msg["Reply-To"] = self.mkemailaddr((author, aname, aemail))
             msg["To"] = ", ".join(toaddrs)
             msg["Subject"] = subj
-            self.F(fromaddr, list(toaddrs), msg)
+            self.sendmail(fromaddr, list(toaddrs), msg)
 
         def email_job_review(rvw):
             jobname, usrs, unames, uemails = rvw
