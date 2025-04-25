@@ -953,6 +953,7 @@ class P4Review(object):
                 self.subscribed[rv["user"]] = True
 
         if self.cfg.review_counter:
+            log.debug(p4.run_counter(self.cfg.review_counter))
             review_counter = p4.run_counter(self.cfg.review_counter)[0]["value"]
             if review_counter == "0" and not self.cfg.force:
                 msg = """Review counter ({rc}) is unset. Either re-run the script with -f option or run "p4 counter {rc}" to set it."""
