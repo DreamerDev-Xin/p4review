@@ -1330,7 +1330,8 @@ class P4Review(object):
             if rv:
                 aname, aemail = rv[0]
 
-            fromaddr = self.mkemailaddr((None, self.default_name, self.default_email))
+            #fromaddr = self.mkemailaddr((None, self.default_name, self.default_email))
+            fromaddr = aemail # Send email from change author if possible.
 
             if self.cfg.skip_author and author in usrs:
                 log.info("removing {} from {}".format(author, usrs))
@@ -1341,7 +1342,6 @@ class P4Review(object):
             if not usrs:  # if the list is empty, return
                 return
             toaddrs = list(map(self.mkemailaddr, zip(usrs, unames, uemails)))
-            log.debug(f"Sending review to reviewers {toaddrs}");
 
             if html:
                 msg = MIMEMultipart("alternative")
@@ -1487,8 +1487,8 @@ class P4Review(object):
             addr = login  # happen
         if "@" not in addr:
             addr = "{}@{}".format(addr, self.cfg.default_domain)
-        #return email.utils.formataddr((name, addr))
-        return addr
+        return email.utils.formataddr((name, addr))
+        #return addr
 
     def sendmail(self, fr, to, msg):
         if self.cfg.debug_email:
