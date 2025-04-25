@@ -837,7 +837,7 @@ class P4Review(object):
     txtwrpr_indented = TextWrapper(initial_indent="\n\t", subsequent_indent="\t")
     sqlsep = "___"  # separator used in sql group_concat() function
     dtfmt = "%Y/%m/%d:%H:%M:%S"  # for jobreview counter
-    html_templ = u"""<html><body>{body}</body></html>"""
+    html_templ = """<html><body>{body}</body></html>"""
     subscribed = {}  # keyed by user, whether the user opts-in for review emails
     mail_sent = 0  # keep track of number of mails sent
 
@@ -1144,7 +1144,7 @@ class P4Review(object):
         # Text summary
         jobsupdated = "(none)"
         if jobs:
-            jb_tmpl = u"{Job} *{Status}* {Description}"
+            jb_tmpl = "{Job} *{Status}* {Description}"
             ujobs = []
             for job in jobs:
                 j = dict()
@@ -1161,8 +1161,8 @@ class P4Review(object):
         clfiles_txt = "(none)"
         if clfiles:
             try:
-                clfiles_txt = u"\n".join(
-                    map(lambda x: u"... {}#{} {}".format(*x), clfiles)
+                clfiles_txt = "\n".join(
+                    map(lambda x: "... {}#{} {}".format(*x), clfiles)
                 )
             except Exception as e:
                 log.error(e)
@@ -1210,8 +1210,8 @@ class P4Review(object):
 
         jobsupdated = "(none)"
         if jobs:
-            jb_tmpl = u'<li><a style="text-decoration: none;" href="{job_url}">{Job}</a> *{Status}* {Description}</li>'
-            jobsupdated = u"\n".join(
+            jb_tmpl = '<li><a style="text-decoration: none;" href="{job_url}">{Job}</a> *{Status}* {Description}</li>'
+            jobsupdated = "\n".join(
                 [
                     jb_tmpl.format(
                         job_url=self.cfg.job_url.format(jobno=job["Job"]), **job
@@ -1231,7 +1231,7 @@ class P4Review(object):
             )
             for dfile, drev, action in clfiles
         ]
-        html_info["clfiles"] = u"\n".join(clfiles_html)
+        html_info["clfiles"] = "\n".join(clfiles_html)
         html_summary = self.cfg.html_change_template.format(**html_info)
 
         if len(txt_summary) + len(html_summary) > self.cfg.max_email_size:
@@ -1261,10 +1261,10 @@ class P4Review(object):
         assert rv  # should be true unless server has consistency problems...
         job = rv[0]
         # add option "jobreview_subject_template"?
-        subj = u"[{} {}] {}".format(
+        subj = "[{} {}] {}".format(
             self.cfg.p4port,
             jobname,
-            u" ".join(job.get("Description").strip().splitlines()),
+            " ".join(job.get("Description").strip().splitlines()),
         )
 
         info = {}
@@ -1289,13 +1289,13 @@ class P4Review(object):
                 "\n".join(["{}:".format(key), self.txtwrpr_indented.fill(val)])
             )
             html_summary.append(
-                u"""<dt>{}</dt><dd>{}</dd>""".format(html_escape(key), html_escape(val))
+                """<dt>{}</dt><dd>{}</dd>""".format(html_escape(key), html_escape(val))
             )
         txt_summary = [
             self.unicode(x, encoding=self.cfg.p4charset) for x in txt_summary
         ]
-        txt_summary = u"\n\n".join(txt_summary)
-        html_summary = u"\n".join(
+        txt_summary = "\n\n".join(txt_summary)
+        html_summary = "\n".join(
             map(lambda x: self.unicode(x, self.cfg.p4charset), html_summary)
         )
 
@@ -1445,7 +1445,7 @@ class P4Review(object):
                 msg.attach(MIMEText("\n\n".join(text_summaries), "plain", "utf8"))
                 msg.attach(
                     MIMEText(
-                        self.html_templ.format(body=u"<br/>\n".join(html_summaries)),
+                        self.html_templ.format(body="<br/>\n".join(html_summaries)),
                         "html",
                         "utf8",
                     )
