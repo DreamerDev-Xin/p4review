@@ -98,7 +98,6 @@ https://twitter.com/p4lester
 
 import argparse
 import atexit
-import cgi
 import email
 import hashlib
 import logging
@@ -112,22 +111,12 @@ import sqlite3
 import time
 import traceback
 
-## Yucky bits to handle Python2 and Python3 differences
-PY2 = sys.version_info[0] == 2  # sys.version_info.major won't work until 2.7 :(
-PY3 = sys.version_info[0] == 3
+from io import StringIO
+from configparser import ConfigParser
+from html import escape as html_escape
+from pickle import loads, dumps
 
-if PY2:
-    from ConfigParser import SafeConfigParser as ConfigParser
-    from StringIO import StringIO
-    from cgi import escape as html_escape
-    from cPickle import loads, dumps
-elif PY3:
-    from io import StringIO
-    from configparser import ConfigParser
-    from html import escape as html_escape
-    from pickle import loads, dumps
-
-    unicode = lambda *x: x[0]
+unicode = lambda *x: x[0]
 
 from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
@@ -596,10 +585,10 @@ class P4CLI(object):
                     fields_needing_sorting = set()
                     for key in r:
                         decoded_key = key
-                        if PY3 and type(decoded_key) == bytes:
+                        if type(decoded_key) == bytes:
                             decoded_key = decoded_key.decode(self.encoding)
                         val = r[key]
-                        if PY3 and type(val) == bytes:
+                        if type(val) == bytes:
                             val = val.decode(self.charset or self.encoding or "utf8")
                         regexmatch = self.array_key_regex.match(decoded_key)
                         if not regexmatch:  # re.match may return None
@@ -687,7 +676,7 @@ class P4CLI(object):
             )
         ) + list(args)
         rv = check_output(cmd)
-        if PY3 and type(rv) == bytes:
+        if type(rv) == bytes:
             rv = rv.decode(self.charset or self.encoding or "utf8")
         return rv
 
