@@ -1345,8 +1345,8 @@ class P4Review(object):
 
             if html:
                 msg = MIMEMultipart("alternative")
-                msg.attach(MIMEText(text, "plain", "utf8"))
-                msg.attach(MIMEText(self.html_templ.format(body=html), "html", "utf8"))
+                msg.attach(MIMEText(text, "plain", "utf-8"))
+                msg.attach(MIMEText(self.html_templ.format(body=html), "html", "utf-8"))
             else:
                 msg = MIMEText(text)
             msg["From"] = fromaddr
@@ -1374,8 +1374,8 @@ class P4Review(object):
                 msg["Subject"] = subj
             else:
                 msg = MIMEText(text)
-            msg.attach(MIMEText(text, "plain", "utf8"))
-            msg.attach(MIMEText(self.html_templ.format(body=html), "html", "utf8"))
+            msg.attach(MIMEText(text, "plain", "utf-8"))
+            msg.attach(MIMEText(self.html_templ.format(body=html), "html", "utf-8"))
             self.sendmail(msg["From"], map(lambda x: "<{}>".format(x), uemails), msg)
 
         # change reviews
@@ -1442,16 +1442,16 @@ class P4Review(object):
 
             if self.cfg.html_change_template:
                 msg = MIMEMultipart("alternative")
-                msg.attach(MIMEText("\n\n".join(text_summaries), "plain", "utf8"))
+                msg.attach(MIMEText("\n\n".join(text_summaries), "plain", "utf-8"))
                 msg.attach(
                     MIMEText(
                         self.html_templ.format(body="<br/>\n".join(html_summaries)),
                         "html",
-                        "utf8",
+                        "utf-8",
                     )
                 )
             else:
-                msg = MIMEText("\n\n".join(text_summaries), "plain", "utf8")
+                msg = MIMEText("\n\n".join(text_summaries), "plain", "utf-8")
             msg["Subject"] = "[{}] {} changes/jobs for review".format(
                 self.cfg.p4port, len(text_summaries)
             )
@@ -1543,7 +1543,7 @@ class P4Review(object):
         self.cleanup()
         sys.exit(1)
 
-    def unicode(self, bytestring, encoding="utf8", err="replace"):
+    def unicode(self, bytestring, encoding="utf-8", err="replace"):
         if type(bytestring) == type(u""):
             return bytestring
         return unicode(bytestring, encoding, err)
