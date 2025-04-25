@@ -1487,7 +1487,8 @@ class P4Review(object):
             addr = login  # happen
         if "@" not in addr:
             addr = "{}@{}".format(addr, self.cfg.default_domain)
-        return email.utils.formataddr((name, addr))
+        #return email.utils.formataddr((name, addr))
+        return addr
 
     def sendmail(self, fr, to, msg):
         if self.cfg.debug_email:
