@@ -898,8 +898,8 @@ class P4Review(object):
             p4.password = str(cfg.p4passwd)
             p4.run_login()
 
-        if p4.run_info()[0].get("unicode") == "enabled":
-            p4.charset = str(self.cfg.p4charset)
+        #if p4.run_info()[0].get("unicode") == "enabled":
+        p4.charset = str(self.cfg.p4charset)
 
         self.p4 = p4  # keep a reference for future use
         db = sqlite3.connect(
