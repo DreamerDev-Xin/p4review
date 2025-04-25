@@ -1341,6 +1341,7 @@ class P4Review(object):
             if not usrs:  # if the list is empty, return
                 return
             toaddrs = map(self.mkemailaddr, zip(usrs, unames, uemails))
+            log.debug(f"Sending review to reviewers {list(toaddrs)}");
 
             if html:
                 msg = MIMEMultipart("alternative")
@@ -1352,7 +1353,7 @@ class P4Review(object):
             msg["Reply-To"] = self.mkemailaddr((author, aname, aemail))
             msg["To"] = ", ".join(toaddrs)
             msg["Subject"] = subj
-            self.sendmail(fromaddr, toaddrs, msg)
+            self.F(fromaddr, list(toaddrs), msg)
 
         def email_job_review(rvw):
             jobname, usrs, unames, uemails = rvw
